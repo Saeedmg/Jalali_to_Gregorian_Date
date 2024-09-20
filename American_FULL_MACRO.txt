@@ -1,0 +1,29 @@
+Sub ConvertPersianDate()
+    Dim dateInput As String
+    Dim pythonExePath As String
+    Dim command As String
+    Dim convertedDate As String
+    Dim wsh As Object
+    Dim process As Object
+    Dim stdOut As String
+    
+    ' Update this path to your actual Python EXE path
+    pythonExePath = "F:\path\American_full.exe"
+    
+    ' Get the complete Persian date from user input without prompts
+    dateInput = InputBox("Enter the Persian date in the format YYYY/MM/DD:", "Persian Date Conversion")
+    
+    ' Create the command to run the Python script with the entered date
+    command = """" & pythonExePath & """ """ & dateInput & """"
+    
+    ' Execute the command and get the converted date silently
+    Set wsh = CreateObject("WScript.Shell")
+    Set process = wsh.Exec(command)
+    stdOut = process.StdOut.ReadAll
+    convertedDate = Trim(Replace(stdOut, vbCrLf, "")) ' Remove newlines and trim extra spaces
+    
+    ' Paste the converted date into the document, if not empty
+    If convertedDate <> "" Then
+        Selection.TypeText convertedDate
+    End If
+End Sub
